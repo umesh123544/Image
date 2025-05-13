@@ -3,199 +3,467 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StreamVid - URL-Based Video Platform</title>
+    <title>StreamVid - Video Sharing Platform</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #121212;
-            color: white;
-            margin: 0;
-            padding: 20px;
+        :root {
+            --primary: #ff3d00;
+            --dark: #121212;
+            --dark-gray: #1e1e1e;
+            --medium-gray: #2d2d2d;
+            --light-gray: #424242;
+            --text: #ffffff;
+            --text-secondary: #bdbdbd;
         }
-        .header {
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--dark-gray);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
         }
-        .add-video-form {
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-        input, textarea, button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            border: none;
-        }
-        input, textarea {
-            background: #2d2d2d;
-            color: white;
-        }
-        button {
-            background: #ff3d00;
-            color: white;
+        
+        .logo {
+            font-size: 1.8rem;
             font-weight: bold;
-            cursor: pointer;
+            color: var(--primary);
+            text-decoration: none;
         }
+        
+        .logo span {
+            color: var(--text);
+        }
+        
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        /* Video Form */
+        .video-form-container {
+            background-color: var(--dark-gray);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            background-color: var(--medium-gray);
+            color: var(--text);
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #e03500;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        /* Video Grid */
+        .section-title {
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+        
         .video-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
         }
+        
         .video-card {
-            background: #1e1e1e;
+            background-color: var(--dark-gray);
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
         }
-        .video-player {
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .video-player-container {
+            position: relative;
             width: 100%;
-            height: 200px;
-            background: black;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: black;
         }
+        
+        .video-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
         .video-info {
-            padding: 15px;
+            padding: 1.2rem;
         }
+        
+        .video-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .video-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        
         .video-actions {
             display: flex;
-            gap: 10px;
+            gap: 0.5rem;
+            margin-top: 1rem;
         }
-        .video-actions button {
+        
+        .video-actions .btn {
             flex: 1;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--light-gray);
+            color: var(--text);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background-color: var(--dark-gray);
+            border-radius: 8px;
+        }
+        
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .main-container {
+                padding: 0 1rem;
+            }
+            
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>StreamVid</h1>
-        <button id="showFormBtn">Add Video by URL</button>
-    </div>
-
-    <div class="add-video-form" id="videoForm" style="display: none;">
-        <h2>Add New Video</h2>
-        <input type="text" id="videoTitle" placeholder="Video Title">
-        <textarea id="videoDescription" placeholder="Description"></textarea>
-        <input type="url" id="videoUrl" placeholder="Video URL (MP4, WebM, YouTube, etc.)">
-        <input type="text" id="thumbnailUrl" placeholder="Thumbnail Image URL (optional)">
-        <button id="addVideoBtn">Add Video</button>
-    </div>
-
-    <div class="video-grid" id="videoContainer">
-        <!-- Videos will be added here -->
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">Stream<span>Vid</span></a>
+            <button id="toggleFormBtn" class="btn">Add Video</button>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Video Form -->
+        <div class="video-form-container" id="videoForm" style="display: none;">
+            <h2 class="form-title">Add New Video</h2>
+            <form id="addVideoForm">
+                <div class="form-group">
+                    <label for="videoTitle">Video Title</label>
+                    <input type="text" id="videoTitle" required placeholder="Enter video title">
+                </div>
+                
+                <div class="form-group">
+                    <label for="videoDescription">Description</label>
+                    <textarea id="videoDescription" placeholder="Enter video description (optional)"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="videoUrl">Video URL</label>
+                    <input type="url" id="videoUrl" required placeholder="https://example.com/video.mp4 or YouTube/Vimeo link">
+                    <small style="color: var(--text-secondary); display: block; margin-top: 0.3rem;">
+                        Supported: MP4, WebM, OGG, YouTube, Vimeo
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="thumbnailUrl">Thumbnail URL (optional)</label>
+                    <input type="url" id="thumbnailUrl" placeholder="https://example.com/thumbnail.jpg">
+                </div>
+                
+                <button type="submit" class="btn btn-block">Add Video</button>
+            </form>
+        </div>
+        
+        <!-- Video List -->
+        <h2 class="section-title">Your Videos</h2>
+        <div class="video-grid" id="videoGrid">
+            <!-- Videos will be dynamically inserted here -->
+        </div>
+        
+        <!-- Empty State (shown when no videos) -->
+        <div class="empty-state" id="emptyState">
+            <h3>No Videos Added Yet</h3>
+            <p>Get started by adding your first video using the "Add Video" button above</p>
+            <button id="addFirstVideoBtn" class="btn">Add Your First Video</button>
+        </div>
     </div>
 
     <script>
-        // Store videos in localStorage
-        let videos = JSON.parse(localStorage.getItem('videos')) || [];
-        
-        // DOM elements
-        const showFormBtn = document.getElementById('showFormBtn');
+        // DOM Elements
+        const toggleFormBtn = document.getElementById('toggleFormBtn');
         const videoForm = document.getElementById('videoForm');
-        const addVideoBtn = document.getElementById('addVideoBtn');
-        const videoContainer = document.getElementById('videoContainer');
+        const addVideoForm = document.getElementById('addVideoForm');
+        const videoGrid = document.getElementById('videoGrid');
+        const emptyState = document.getElementById('emptyState');
+        const addFirstVideoBtn = document.getElementById('addFirstVideoBtn');
         
-        // Toggle form visibility
-        showFormBtn.addEventListener('click', () => {
-            videoForm.style.display = videoForm.style.display === 'none' ? 'block' : 'none';
+        // Sample data structure for videos
+        let videos = JSON.parse(localStorage.getItem('streamvid_videos')) || [];
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderVideos();
+            updateEmptyState();
+            
+            // Set up event listeners
+            toggleFormBtn.addEventListener('click', toggleVideoForm);
+            addFirstVideoBtn.addEventListener('click', toggleVideoForm);
+            addVideoForm.addEventListener('submit', handleAddVideo);
         });
         
-        // Add new video
-        addVideoBtn.addEventListener('click', () => {
-            const title = document.getElementById('videoTitle').value;
-            const description = document.getElementById('videoDescription').value;
-            const url = document.getElementById('videoUrl').value;
-            const thumbnail = document.getElementById('thumbnailUrl').value || getDefaultThumbnail();
+        // Toggle video form visibility
+        function toggleVideoForm() {
+            videoForm.style.display = videoForm.style.display === 'none' ? 'block' : 'none';
+            
+            if (videoForm.style.display === 'block') {
+                toggleFormBtn.textContent = 'Cancel';
+                // Scroll to form
+                videoForm.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                toggleFormBtn.textContent = 'Add Video';
+            }
+        }
+        
+        // Handle form submission
+        function handleAddVideo(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('videoTitle').value.trim();
+            const description = document.getElementById('videoDescription').value.trim();
+            const url = document.getElementById('videoUrl').value.trim();
+            const thumbnail = document.getElementById('thumbnailUrl').value.trim();
             
             if (!title || !url) {
                 alert('Please provide at least a title and video URL');
                 return;
             }
             
+            // Validate URL
+            try {
+                new URL(url);
+            } catch (e) {
+                alert('Please enter a valid URL');
+                return;
+            }
+            
             const newVideo = {
-                id: Date.now(),
+                id: Date.now().toString(),
                 title,
                 description,
                 url,
-                thumbnail,
+                thumbnail: thumbnail || getDefaultThumbnail(title),
                 createdAt: new Date().toISOString()
             };
             
-            videos.push(newVideo);
+            videos.unshift(newVideo); // Add to beginning of array
             saveVideos();
             renderVideos();
+            updateEmptyState();
             
             // Reset form
-            document.getElementById('videoTitle').value = '';
-            document.getElementById('videoDescription').value = '';
-            document.getElementById('videoUrl').value = '';
-            document.getElementById('thumbnailUrl').value = '';
-            videoForm.style.display = 'none';
-        });
+            addVideoForm.reset();
+            toggleVideoForm();
+            
+            // Scroll to the newly added video
+            document.getElementById(`video-${newVideo.id}`)?.scrollIntoView({ behavior: 'smooth' });
+        }
         
         // Save videos to localStorage
         function saveVideos() {
-            localStorage.setItem('videos', JSON.stringify(videos));
+            localStorage.setItem('streamvid_videos', JSON.stringify(videos));
         }
         
         // Render all videos
         function renderVideos() {
-            videoContainer.innerHTML = '';
+            videoGrid.innerHTML = '';
             
             videos.forEach(video => {
                 const videoCard = document.createElement('div');
                 videoCard.className = 'video-card';
+                videoCard.id = `video-${video.id}`;
+                
                 videoCard.innerHTML = `
-                    <div class="video-player">
-                        ${getVideoEmbedCode(video.url)}
+                    <div class="video-player-container">
+                        ${getVideoEmbedCode(video.url, video.thumbnail)}
                     </div>
                     <div class="video-info">
-                        <h3>${video.title}</h3>
-                        <p>${video.description}</p>
+                        <h3 class="video-title" title="${video.title}">${video.title}</h3>
+                        <p class="video-description">${video.description || 'No description provided'}</p>
+                        <div class="video-meta">
+                            <span>${formatDate(video.createdAt)}</span>
+                            <span>${getVideoSource(video.url)}</span>
+                        </div>
                         <div class="video-actions">
-                            <button onclick="deleteVideo(${video.id})">Delete</button>
+                            <button class="btn btn-outline" onclick="copyVideoUrl('${video.url}')">Share</button>
+                            <button class="btn btn-outline" onclick="deleteVideo('${video.id}')">Delete</button>
                         </div>
                     </div>
                 `;
-                videoContainer.appendChild(videoCard);
+                
+                videoGrid.appendChild(videoCard);
             });
         }
         
         // Generate embed code based on URL
-        function getVideoEmbedCode(url) {
+        function getVideoEmbedCode(url, thumbnail) {
             // YouTube
-            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            if (isYouTubeUrl(url)) {
                 const videoId = getYouTubeId(url);
-                return `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+                return `<iframe class="video-player" src="https://www.youtube.com/embed/${videoId}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             }
             
             // Vimeo
-            if (url.includes('vimeo.com')) {
-                const videoId = url.split('/').pop();
-                return `<iframe width="100%" height="100%" src="https://player.vimeo.com/video/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+            if (isVimeoUrl(url)) {
+                const videoId = url.split('/').pop().split('?')[0];
+                return `<iframe class="video-player" src="https://player.vimeo.com/video/${videoId}?color=ff3d00&title=0&byline=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
             }
             
             // Direct video file (MP4, WebM, etc.)
             return `
-                <video width="100%" height="100%" controls poster="${videos.find(v => v.url === url)?.thumbnail || ''}">
+                <video class="video-player" controls poster="${thumbnail}">
                     <source src="${url}" type="${getVideoType(url)}">
-                    Your browser does not support the video tag.
+                    Your browser does not support HTML5 video.
                 </video>
             `;
         }
         
-        // Extract YouTube ID from URL
+        // YouTube helpers
+        function isYouTubeUrl(url) {
+            return url.includes('youtube.com') || url.includes('youtu.be');
+        }
+        
         function getYouTubeId(url) {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
             const match = url.match(regExp);
             return (match && match[2].length === 11) ? match[2] : null;
         }
         
+        // Vimeo helpers
+        function isVimeoUrl(url) {
+            return url.includes('vimeo.com');
+        }
+        
         // Get video type from URL
         function getVideoType(url) {
-            const extension = url.split('.').pop().split('?')[0];
+            const extension = url.split('.').pop().split('?')[0].toLowerCase();
             switch(extension) {
                 case 'mp4': return 'video/mp4';
                 case 'webm': return 'video/webm';
@@ -204,9 +472,25 @@
             }
         }
         
+        // Get video source for display
+        function getVideoSource(url) {
+            if (isYouTubeUrl(url)) return 'YouTube';
+            if (isVimeoUrl(url)) return 'Vimeo';
+            return 'Direct Video';
+        }
+        
         // Generate default thumbnail
-        function getDefaultThumbnail() {
-            return `https://via.placeholder.com/300x200/333/fff?text=No+Thumbnail`;
+        function getDefaultThumbnail(title) {
+            const colors = ['ff3d00', '00bcd4', '4caf50', '9c27b0', 'ff9800'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const text = encodeURIComponent(title.substring(0, 20));
+            return `https://via.placeholder.com/800x450/${color}/ffffff?text=${text}`;
+        }
+        
+        // Format date
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
         
         // Delete video
@@ -215,11 +499,22 @@
                 videos = videos.filter(video => video.id !== id);
                 saveVideos();
                 renderVideos();
+                updateEmptyState();
             }
         }
         
-        // Initial render
-        renderVideos();
+        // Copy video URL to clipboard
+        function copyVideoUrl(url) {
+            navigator.clipboard.writeText(url)
+                .then(() => alert('Video URL copied to clipboard!'))
+                .catch(() => prompt('Copy this URL:', url));
+        }
+        
+        // Update empty state visibility
+        function updateEmptyState() {
+            emptyState.style.display = videos.length === 0 ? 'block' : 'none';
+            videoGrid.style.display = videos.length === 0 ? 'none' : 'grid';
+        }
     </script>
 </body>
 </html>
