@@ -3,471 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineStream - Watch, Upload & Download Movies</title>
+    <title>StreamVid - URL-Based Video Platform</title>
     <style>
-        :root {
-            --primary-color: #e50914;
-            --dark-color: #141414;
-            --light-color: #f4f4f4;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
         body {
             font-family: 'Arial', sans-serif;
-            background-color: var(--dark-color);
-            color: var(--light-color);
-            line-height: 1.6;
-        }
-        
-        /* Promotional Banner */
-        .promo-banner {
-            background: linear-gradient(to right, #e50914, #b00710);
+            background-color: #121212;
             color: white;
-            text-align: center;
-            padding: 15px 0;
-            font-size: 1.2rem;
+            margin: 0;
+            padding: 20px;
         }
-        
-        /* Header/Navigation */
-        header {
-            background-color: rgba(0, 0, 0, 0.9);
-            padding: 1rem 2rem;
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            margin-bottom: 30px;
         }
-        
-        .logo {
-            color: var(--primary-color);
-            font-size: 2rem;
-            font-weight: bold;
+        .add-video-form {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
         }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-left: 2rem;
-        }
-        
-        nav ul li a {
-            color: var(--light-color);
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-        
-        nav ul li a:hover {
-            color: var(--primary-color);
-        }
-        
-        /* Hero Section */
-        .hero {
-            height: 60vh;
-            background: url('https://via.placeholder.com/1920x1080') no-repeat center center/cover;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 4rem;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        input, textarea, button {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 600px;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: var(--primary-color);
-            color: var(--light-color);
-            padding: 0.8rem 1.8rem;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 1rem;
+        }
+        input, textarea {
+            background: #2d2d2d;
+            color: white;
+        }
+        button {
+            background: #ff3d00;
+            color: white;
             font-weight: bold;
-            transition: opacity 0.3s;
+            cursor: pointer;
         }
-        
-        .btn:hover {
-            opacity: 0.9;
-        }
-        
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-        
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary-color);
-        }
-        
-        /* Video Grid */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
-        
         .video-card {
-            background: #222;
+            background: #1e1e1e;
             border-radius: 8px;
             overflow: hidden;
-            transition: transform 0.3s;
         }
-        
-        .video-card:hover {
-            transform: scale(1.05);
-        }
-        
-        .video-thumbnail {
-            position: relative;
-        }
-        
-        .video-thumbnail img {
+        .video-player {
             width: 100%;
-            height: auto;
-            display: block;
+            height: 200px;
+            background: black;
         }
-        
-        .video-duration {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 3px;
-            font-size: 0.9rem;
-        }
-        
         .video-info {
-            padding: 1rem;
+            padding: 15px;
         }
-        
-        .video-title {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .video-meta {
+        .video-actions {
             display: flex;
-            justify-content: space-between;
-            color: #aaa;
-            font-size: 0.9rem;
+            gap: 10px;
         }
-        
-        /* Upload Section */
-        .upload-section {
-            background: #111;
-            padding: 2rem;
-            border-radius: 8px;
-            margin-bottom: 3rem;
-        }
-        
-        .upload-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        
-        .form-group label {
-            font-weight: bold;
-        }
-        
-        .form-group input, 
-        .form-group textarea,
-        .form-group select {
-            padding: 0.8rem;
-            border: 1px solid #333;
-            border-radius: 5px;
-            background: #222;
-            color: white;
-        }
-        
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        
-        .file-upload {
-            border: 2px dashed #444;
-            padding: 2rem;
-            text-align: center;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .file-upload:hover {
-            border-color: var(--primary-color);
-        }
-        
-        /* Footer */
-        footer {
-            background: #000;
-            color: #777;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                padding: 1rem;
-            }
-            
-            nav ul {
-                margin-top: 1rem;
-            }
-            
-            .hero {
-                height: 50vh;
-                padding: 0 2rem;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .video-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
+        .video-actions button {
+            flex: 1;
         }
     </style>
 </head>
 <body>
-    <!-- Promotional Banner -->
-    <div class="promo-banner">
-        🎉 Special Offer! Get Premium Membership for 50% off this week only!
+    <div class="header">
+        <h1>StreamVid</h1>
+        <button id="showFormBtn">Add Video by URL</button>
     </div>
-    
-    <!-- Header/Navigation -->
-    <header>
-        <div class="logo">CineStream</div>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#movies">Movies</a></li>
-                <li><a href="#tv-shows">TV Shows</a></li>
-                <li><a href="#upload">Upload</a></li>
-                <li><a href="#account">My Account</a></li>
-            </ul>
-        </nav>
-    </header>
-    
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>Unlimited Movies, TV Shows and More</h1>
-            <p>Watch anywhere. Upload your content. Download for offline viewing.</p>
-            <a href="#movies" class="btn">Browse Content</a>
-            <a href="#upload" class="btn" style="background: #333; margin-left: 1rem;">Upload Video</a>
-        </div>
-    </section>
-    
-    <!-- Main Content -->
-    <main class="container">
-        <!-- Featured Videos Section -->
-        <section id="movies">
-            <h2 class="section-title">Featured Movies</h2>
-            <div class="video-grid">
-                <!-- Video Card 1 -->
-                <div class="video-card">
-                    <div class="video-thumbnail">
-                        <img src="https://via.placeholder.com/300x169" alt="Movie Title">
-                        <span class="video-duration">2:15:30</span>
+
+    <div class="add-video-form" id="videoForm" style="display: none;">
+        <h2>Add New Video</h2>
+        <input type="text" id="videoTitle" placeholder="Video Title">
+        <textarea id="videoDescription" placeholder="Description"></textarea>
+        <input type="url" id="videoUrl" placeholder="Video URL (MP4, WebM, YouTube, etc.)">
+        <input type="text" id="thumbnailUrl" placeholder="Thumbnail Image URL (optional)">
+        <button id="addVideoBtn">Add Video</button>
+    </div>
+
+    <div class="video-grid" id="videoContainer">
+        <!-- Videos will be added here -->
+    </div>
+
+    <script>
+        // Store videos in localStorage
+        let videos = JSON.parse(localStorage.getItem('videos')) || [];
+        
+        // DOM elements
+        const showFormBtn = document.getElementById('showFormBtn');
+        const videoForm = document.getElementById('videoForm');
+        const addVideoBtn = document.getElementById('addVideoBtn');
+        const videoContainer = document.getElementById('videoContainer');
+        
+        // Toggle form visibility
+        showFormBtn.addEventListener('click', () => {
+            videoForm.style.display = videoForm.style.display === 'none' ? 'block' : 'none';
+        });
+        
+        // Add new video
+        addVideoBtn.addEventListener('click', () => {
+            const title = document.getElementById('videoTitle').value;
+            const description = document.getElementById('videoDescription').value;
+            const url = document.getElementById('videoUrl').value;
+            const thumbnail = document.getElementById('thumbnailUrl').value || getDefaultThumbnail();
+            
+            if (!title || !url) {
+                alert('Please provide at least a title and video URL');
+                return;
+            }
+            
+            const newVideo = {
+                id: Date.now(),
+                title,
+                description,
+                url,
+                thumbnail,
+                createdAt: new Date().toISOString()
+            };
+            
+            videos.push(newVideo);
+            saveVideos();
+            renderVideos();
+            
+            // Reset form
+            document.getElementById('videoTitle').value = '';
+            document.getElementById('videoDescription').value = '';
+            document.getElementById('videoUrl').value = '';
+            document.getElementById('thumbnailUrl').value = '';
+            videoForm.style.display = 'none';
+        });
+        
+        // Save videos to localStorage
+        function saveVideos() {
+            localStorage.setItem('videos', JSON.stringify(videos));
+        }
+        
+        // Render all videos
+        function renderVideos() {
+            videoContainer.innerHTML = '';
+            
+            videos.forEach(video => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.innerHTML = `
+                    <div class="video-player">
+                        ${getVideoEmbedCode(video.url)}
                     </div>
                     <div class="video-info">
-                        <h3 class="video-title">The Last Adventure</h3>
-                        <div class="video-meta">
-                            <span>2023</span>
-                            <span>HD</span>
-                        </div>
+                        <h3>${video.title}</h3>
+                        <p>${video.description}</p>
                         <div class="video-actions">
-                            <a href="#" class="btn" style="padding: 0.5rem; margin-top: 0.5rem; display: block; text-align: center;">Watch Now</a>
-                            <a href="#" class="btn" style="padding: 0.5rem; margin-top: 0.5rem; display: block; text-align: center; background: #333;">Download</a>
+                            <button onclick="deleteVideo(${video.id})">Delete</button>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Video Card 2 -->
-                <div class="video-card">
-                    <div class="video-thumbnail">
-                        <img src="https://via.placeholder.com/300x169" alt="Movie Title">
-                        <span class="video-duration">1:45:22</span>
-                    </div>
-                    <div class="video-info">
-                        <h3 class="video-title">Space Odyssey</h3>
-                        <div class="video-meta">
-                            <span>2022</span>
-                            <span>4K</span>
-                        </div>
-                        <div class="video-actions">
-                            <a href="#" class="btn" style="padding: 0.5rem; margin-top: 0.5rem; display: block; text-align: center;">Watch Now</a>
-                            <a href="#" class="btn" style="padding: 0.5rem; margin-top: 0.5rem; display: block; text-align: center; background: #333;">Download</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Add more video cards here -->
-            </div>
-        </section>
+                `;
+                videoContainer.appendChild(videoCard);
+            });
+        }
         
-        <!-- Upload Section -->
-        <section id="upload" class="upload-section">
-            <h2 class="section-title">Upload Your Content</h2>
-            <form class="upload-form" id="videoUploadForm">
-                <div class="form-group">
-                    <label for="videoTitle">Video Title</label>
-                    <input type="text" id="videoTitle" name="videoTitle" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="videoDescription">Description</label>
-                    <textarea id="videoDescription" name="videoDescription" required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="videoCategory">Category</label>
-                    <select id="videoCategory" name="videoCategory" required>
-                        <option value="">Select a category</option>
-                        <option value="movie">Movie</option>
-                        <option value="tv-show">TV Show</option>
-                        <option value="documentary">Documentary</option>
-                        <option value="short-film">Short Film</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="videoFile">Video File</label>
-                    <div class="file-upload" id="videoFileDropzone">
-                        <p>Drag & drop your video file here or click to browse</p>
-                        <input type="file" id="videoFile" name="videoFile" accept="video/*" style="display: none;" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="videoThumbnail">Thumbnail Image</label>
-                    <div class="file-upload" id="thumbnailDropzone">
-                        <p>Drag & drop your thumbnail here or click to browse</p>
-                        <input type="file" id="videoThumbnail" name="videoThumbnail" accept="image/*" style="display: none;">
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn">Upload Video</button>
-            </form>
-        </section>
-        
-        <!-- Streaming Section -->
-        <section id="streaming">
-            <h2 class="section-title">Now Streaming</h2>
-            <div style="background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 2rem;">
-                <video controls style="width: 100%;">
-                    <source src="sample-video.mp4" type="video/mp4">
+        // Generate embed code based on URL
+        function getVideoEmbedCode(url) {
+            // YouTube
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                const videoId = getYouTubeId(url);
+                return `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+            }
+            
+            // Vimeo
+            if (url.includes('vimeo.com')) {
+                const videoId = url.split('/').pop();
+                return `<iframe width="100%" height="100%" src="https://player.vimeo.com/video/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+            }
+            
+            // Direct video file (MP4, WebM, etc.)
+            return `
+                <video width="100%" height="100%" controls poster="${videos.find(v => v.url === url)?.thumbnail || ''}">
+                    <source src="${url}" type="${getVideoType(url)}">
                     Your browser does not support the video tag.
                 </video>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 3rem;">
-                <button class="btn" style="background: #333;">Add to Watchlist</button>
-                <button class="btn">Download</button>
-                <button class="btn" style="background: #333;">Share</button>
-            </div>
-        </section>
-    </main>
-    
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2023 CineStream. All rights reserved.</p>
-        <div style="margin-top: 1rem;">
-            <a href="#" style="color: #777; margin: 0 1rem;">Terms of Service</a>
-            <a href="#" style="color: #777; margin: 0 1rem;">Privacy Policy</a>
-            <a href="#" style="color: #777; margin: 0 1rem;">Contact Us</a>
-        </div>
-    </footer>
-    
-    <script>
-        // Handle file dropzone interactions
-        document.getElementById('videoFileDropzone').addEventListener('click', function() {
-            document.getElementById('videoFile').click();
-        });
+            `;
+        }
         
-        document.getElementById('thumbnailDropzone').addEventListener('click', function() {
-            document.getElementById('videoThumbnail').click();
-        });
+        // Extract YouTube ID from URL
+        function getYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
         
-        // Handle file selection display
-        document.getElementById('videoFile').addEventListener('change', function(e) {
-            const dropzone = document.getElementById('videoFileDropzone');
-            if (this.files.length > 0) {
-                dropzone.innerHTML = `<p>Selected: ${this.files[0].name}</p>`;
+        // Get video type from URL
+        function getVideoType(url) {
+            const extension = url.split('.').pop().split('?')[0];
+            switch(extension) {
+                case 'mp4': return 'video/mp4';
+                case 'webm': return 'video/webm';
+                case 'ogg': return 'video/ogg';
+                default: return 'video/mp4';
             }
-        });
+        }
         
-        document.getElementById('videoThumbnail').addEventListener('change', function(e) {
-            const dropzone = document.getElementById('thumbnailDropzone');
-            if (this.files.length > 0) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    dropzone.innerHTML = `<img src="${event.target.result}" style="max-width: 100%; max-height: 150px;">`;
-                };
-                reader.readAsDataURL(this.files[0]);
+        // Generate default thumbnail
+        function getDefaultThumbnail() {
+            return `https://via.placeholder.com/300x200/333/fff?text=No+Thumbnail`;
+        }
+        
+        // Delete video
+        function deleteVideo(id) {
+            if (confirm('Are you sure you want to delete this video?')) {
+                videos = videos.filter(video => video.id !== id);
+                saveVideos();
+                renderVideos();
             }
-        });
+        }
         
-        // Form submission
-        document.getElementById('videoUploadForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Video upload functionality would be implemented with backend code.');
-            // Here you would typically use AJAX to send the form data to a server
-        });
+        // Initial render
+        renderVideos();
     </script>
 </body>
 </html>
